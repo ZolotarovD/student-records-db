@@ -1,0 +1,32 @@
+services:
+  db:
+    image: postgres:16
+    container_name: sr_db
+    environment:
+      POSTGRES_USER: sr_admin
+      POSTGRES_PASSWORD: sr_pass
+      POSTGRES_DB: student_records
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./db/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sr_admin -d student_records"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+
+  api:
+    build: ./app
+    container_name: sr_api
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: student_records
+      DB_USER: sr_admin
+      DB_PASSWORD: sr_pass
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
