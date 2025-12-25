@@ -10,7 +10,7 @@
 
 ---
 
-## 1) Запуск (тільки Ctrl+C / Ctrl+V)
+## 1) Запуск
 
 ### Вимоги на ПК:
 - Docker Desktop (або Docker Engine + docker compose)
